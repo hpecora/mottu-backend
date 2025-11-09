@@ -6,24 +6,39 @@ plugins {
 
 group = 'com.mottu'
 version = '1.0.0'
-sourceCompatibility = '17'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // Spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // OpenAPI/Swagger UI
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
-    // 🔥 Banco de dados H2
+    // BCrypt / PasswordEncoder (sem ativar segurança completa)
+    implementation 'org.springframework.security:spring-security-crypto'
+
+    // Banco H2 (runtime)
     runtimeOnly 'com.h2database:h2'
 
-    // 🔥 Lombok (adicione estas duas linhas)
+    // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    // Devtools (opcional, hot reload em dev)
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

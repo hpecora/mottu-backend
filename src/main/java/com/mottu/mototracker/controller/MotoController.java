@@ -1,8 +1,10 @@
+// src/main/java/com/mottu/mototracker/controller/MotoController.java
 package com.mottu.mototracker.controller;
 
 import com.mottu.mototracker.model.Moto;
+import com.mottu.mototracker.auth.dto.MotoUpdateRequest;
 import com.mottu.mototracker.service.MotoService;
-import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,30 +14,31 @@ import java.util.List;
 public class MotoController {
 
     private final MotoService service;
-
-    public MotoController(MotoService service) {
-        this.service = service;
-    }
+    public MotoController(MotoService service) { this.service = service; }
 
     @GetMapping
-    public List<Moto> listar() {
-        return service.listar();
+    public ResponseEntity<List<Moto>> list() {
+        return ResponseEntity.ok(service.list());
     }
 
     @PostMapping
-    public Moto cadastrar(@RequestBody @Valid Moto moto) {
-        return service.salvar(moto);
+    public ResponseEntity<Moto> create(@RequestBody Moto req) {
+        return ResponseEntity.ok(service.create(req));
     }
 
     @PutMapping("/{id}")
-    public Moto atualizar(@PathVariable Long id, @RequestBody @Valid Moto moto) {
-        Moto motoExistente = service.buscarPorId(id);
-        moto.setId(motoExistente.getId());
-        return service.salvar(moto);
+    public ResponseEntity<Moto> update(@PathVariable Long id, @RequestBody MotoUpdateRequest req) {
+        return ResponseEntity.ok(service.update(id, req));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Moto> patch(@PathVariable Long id, @RequestBody MotoUpdateRequest req) {
+        return ResponseEntity.ok(service.update(id, req));
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
-        service.deletar(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
